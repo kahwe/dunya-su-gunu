@@ -1,0 +1,1079 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🐛 Bug Avcıları — Dünya Su Günü</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --blue: #1565C0;
+    --light-blue: #E3F2FD;
+    --red: #C62828;
+    --green: #2E7D32;
+    --yellow: #FFD600;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    transition: background 0.8s ease;
+    user-select: none;
+    -webkit-user-select: none;
+    cursor: default;
+  }
+
+  .bg-normal { background: linear-gradient(180deg, #E3F2FD 0%, #90CAF9 100%); }
+  .bg-bug { background: linear-gradient(180deg, #FFCDD2 0%, #EF9A9A 100%); }
+  .bg-victory { background: linear-gradient(180deg, #C8E6C9 0%, #81C784 100%); }
+
+  #app {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5vh 2vw;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ---- HEADER ---- */
+  .header {
+    text-align: center;
+    flex-shrink: 0;
+  }
+  .header h1 {
+    font-size: clamp(28px, 4.5vw, 56px);
+    font-weight: 900;
+    color: var(--blue);
+    text-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    transition: color 0.5s;
+  }
+  .header .subtitle {
+    font-size: clamp(14px, 2.2vw, 28px);
+    font-weight: 800;
+    color: #1976D2;
+    margin-top: 0.3vh;
+  }
+
+  /* ---- MASCOT ---- */
+  .mascot-area {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0.8vh 0;
+  }
+  .mascot-drop {
+    font-size: clamp(60px, 10vw, 120px);
+    animation: float 3s ease-in-out infinite;
+    filter: drop-shadow(0 6px 12px rgba(0,0,0,0.15));
+    line-height: 1;
+  }
+  .mascot-face {
+    font-size: clamp(30px, 5vw, 60px);
+    margin-top: -1.5vh;
+    transition: all 0.3s;
+    line-height: 1;
+  }
+  .mascot-bubble {
+    background: white;
+    border-radius: 24px;
+    padding: 1vh 2vw;
+    font-size: clamp(16px, 2.5vw, 32px);
+    font-weight: 800;
+    color: #333;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 60vw;
+    margin-top: 0.5vh;
+    animation: popIn 0.3s ease-out;
+    line-height: 1.3;
+  }
+  .mascot-shake { animation: shake 0.6s ease-in-out !important; }
+
+  /* ---- COUNTER BAR ---- */
+  .counter-bar {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 1vw;
+    border-radius: 20px;
+    padding: 0.8vh 2.5vw;
+    font-size: clamp(18px, 3vw, 38px);
+    font-weight: 900;
+    margin: 0.5vh 0;
+    animation: popIn 0.3s ease-out;
+  }
+  .counter-waste {
+    background: rgba(255,23,68,0.15);
+    border: 3px solid #FF1744;
+    color: var(--red);
+  }
+  .counter-saved {
+    background: rgba(0,230,118,0.15);
+    border: 3px solid #00E676;
+    color: var(--green);
+  }
+  .counter-icon { font-size: clamp(28px, 4vw, 52px); }
+
+  /* ---- STEPS GRID ---- */
+  .steps-container {
+    flex: 1;
+    width: 100%;
+    max-width: 1200px;
+    overflow-y: auto;
+    padding: 1vh 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2vh;
+    scrollbar-width: none;
+  }
+  .steps-container::-webkit-scrollbar { display: none; }
+
+  .step-btn {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    padding: 1.8vh 2.5vw;
+    border-radius: 24px;
+    border: 4px solid transparent;
+    font-size: clamp(18px, 3vw, 36px);
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    cursor: default;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    overflow: hidden;
+    text-align: left;
+    width: 100%;
+    outline: none;
+  }
+  .step-icon {
+    font-size: clamp(44px, 7vw, 80px);
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .step-label { flex: 1; }
+  .step-badge {
+    font-size: clamp(32px, 5vw, 60px);
+    line-height: 1;
+  }
+
+  .step-idle {
+    background: rgba(255,255,255,0.35);
+    opacity: 0.5;
+    transform: scale(0.94);
+  }
+  .step-next {
+    background: rgba(255,255,255,0.95);
+    border: 4px dashed var(--yellow);
+    transform: scale(1.04);
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(255,214,0,0.5);
+    animation: pulse 1.3s ease-in-out infinite;
+  }
+  .step-done {
+    color: white;
+    transform: scale(0.96);
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  }
+  .step-bug {
+    background: linear-gradient(135deg, #FF5252, #FF1744) !important;
+    border-color: #D50000 !important;
+    animation: shake 0.6s ease-in-out !important;
+  }
+  .step-fixed {
+    background: linear-gradient(135deg, #69F0AE, #00E676) !important;
+    border-color: #00C853 !important;
+  }
+
+  /* ---- INFO PANELS ---- */
+  .panel {
+    background: rgba(255,255,255,0.92);
+    border-radius: 28px;
+    padding: 3vh 3vw;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 700px;
+    width: 90%;
+    animation: popIn 0.4s ease-out;
+  }
+  .panel-bug { border: 4px solid #FF1744; }
+  .panel-victory { border: 4px solid #00E676; }
+  .panel h2 {
+    font-size: clamp(24px, 5vw, 48px);
+    font-weight: 900;
+    margin-bottom: 1vh;
+  }
+  .panel p {
+    font-size: clamp(16px, 2.8vw, 30px);
+    font-weight: 700;
+    line-height: 1.5;
+    color: #444;
+  }
+  .panel .emoji-big {
+    font-size: clamp(50px, 10vw, 100px);
+    margin-bottom: 1vh;
+    line-height: 1.2;
+  }
+
+  /* ---- BIG BUTTON ---- */
+  .big-btn {
+    border: none;
+    border-radius: 28px;
+    padding: 2.2vh 5vw;
+    font-size: clamp(22px, 4vw, 44px);
+    font-weight: 900;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    animation: bigPulse 2s ease-in-out infinite;
+    margin-top: 2vh;
+    outline: none;
+    transition: transform 0.2s;
+  }
+  .big-btn:active { transform: scale(0.95); }
+  .btn-yellow { background: linear-gradient(135deg, #FFD600, #FFAB00); color: #333; }
+  .btn-green { background: linear-gradient(135deg, #69F0AE, #00E676); color: #1B5E20; }
+  .btn-blue { background: linear-gradient(135deg, #4FC3F7, #29B6F6); color: white; }
+
+  /* ---- INTRO ---- */
+  .intro-card {
+    background: rgba(255,255,255,0.88);
+    border-radius: 28px;
+    padding: 3vh 3vw;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    max-width: 750px;
+    width: 90%;
+    text-align: center;
+  }
+  .intro-card p {
+    font-size: clamp(18px, 3vw, 34px);
+    font-weight: 700;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1.5vh;
+  }
+  .intro-card .highlight-blue { color: #1565C0; font-weight: 900; }
+  .intro-card .highlight-purple { color: #AB47BC; font-weight: 900; }
+  .intro-card .highlight-red { color: #FF1744; font-weight: 900; }
+
+  /* ---- CERTIFICATE ---- */
+  .certificate {
+    margin-top: 1.5vh;
+    padding: 1.5vh 3vw;
+    background: rgba(0,230,118,0.1);
+    border-radius: 20px;
+    display: inline-block;
+  }
+  .certificate .trophy { font-size: clamp(40px, 6vw, 70px); }
+  .certificate p {
+    font-size: clamp(14px, 2.2vw, 24px) !important;
+    color: #1B5E20 !important;
+    margin: 0 !important;
+  }
+
+  /* ---- WATER DROPS CANVAS ---- */
+  #water-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  /* ---- CONFETTI CANVAS ---- */
+  #confetti-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 100;
+  }
+
+  /* ---- ANIMATIONS ---- */
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 8px 30px rgba(255,214,0,0.5); }
+    50% { box-shadow: 0 8px 40px rgba(255,214,0,0.8); }
+  }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-10px); }
+    40% { transform: translateX(10px); }
+    60% { transform: translateX(-8px); }
+    80% { transform: translateX(8px); }
+  }
+  @keyframes popIn {
+    0% { transform: scale(0.6); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  @keyframes bigPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+  }
+  @keyframes bounceUp {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+  @keyframes wobble {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-20deg); }
+    75% { transform: rotate(20deg); }
+  }
+</style>
+</head>
+<body class="bg-normal">
+
+<canvas id="water-canvas"></canvas>
+<canvas id="confetti-canvas"></canvas>
+
+<div id="app">
+  <!-- Header -->
+  <div class="header">
+    <h1 id="title">🐛 Bug Avcıları 🐛</h1>
+    <div class="subtitle" id="subtitle">🌍 Dünya Su Günü — El Yıkama Algoritması</div>
+  </div>
+
+  <!-- Mascot -->
+  <div class="mascot-area">
+    <div class="mascot-drop" id="mascot-drop">💧</div>
+    <div class="mascot-face" id="mascot-face">😊</div>
+    <div class="mascot-bubble" id="mascot-bubble">Merhaba! Ben Damla! 💧</div>
+  </div>
+
+  <!-- Counter -->
+  <div id="counter-area"></div>
+
+  <!-- Main Content -->
+  <div id="content" style="flex:1; width:100%; display:flex; flex-direction:column; align-items:center; overflow:hidden;"></div>
+</div>
+
+<script>
+// ============================================================
+// AUDIO ENGINE — continuous water + one-shot FX
+// ============================================================
+const AudioEngine = (() => {
+  let ctx = null;
+  let waterNode = null;
+  let waterGain = null;
+  let noiseNode = null;
+  let noiseGain = null;
+
+  function ensure() {
+    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+
+  // White noise buffer for water hiss
+  function createNoiseBuffer(c) {
+    const size = c.sampleRate * 2;
+    const buf = c.createBuffer(1, size, c.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < size; i++) data[i] = Math.random() * 2 - 1;
+    return buf;
+  }
+
+  function startWater() {
+    const c = ensure();
+    if (waterNode) return;
+
+    // Low rumble
+    waterNode = c.createOscillator();
+    waterNode.type = 'sine';
+    waterNode.frequency.value = 180;
+    waterGain = c.createGain();
+    waterGain.gain.value = 0.06;
+    const lfo = c.createOscillator();
+    lfo.frequency.value = 3;
+    const lfoGain = c.createGain();
+    lfoGain.gain.value = 30;
+    lfo.connect(lfoGain);
+    lfoGain.connect(waterNode.frequency);
+    waterNode.connect(waterGain);
+    waterGain.connect(c.destination);
+    waterNode.start();
+    lfo.start();
+    waterNode._lfo = lfo;
+
+    // Hiss
+    noiseNode = c.createBufferSource();
+    noiseNode.buffer = createNoiseBuffer(c);
+    noiseNode.loop = true;
+    const bandpass = c.createBiquadFilter();
+    bandpass.type = 'bandpass';
+    bandpass.frequency.value = 4000;
+    bandpass.Q.value = 0.5;
+    noiseGain = c.createGain();
+    noiseGain.gain.value = 0.04;
+    noiseNode.connect(bandpass);
+    bandpass.connect(noiseGain);
+    noiseGain.connect(c.destination);
+    noiseNode.start();
+  }
+
+  function stopWater() {
+    try {
+      if (waterNode) { waterNode._lfo.stop(); waterNode.stop(); waterNode = null; }
+      if (noiseNode) { noiseNode.stop(); noiseNode = null; }
+    } catch(e) {}
+  }
+
+  // Intensify water sound (waste mode)
+  function setWaterIntensity(intense) {
+    if (waterGain) waterGain.gain.value = intense ? 0.12 : 0.06;
+    if (noiseGain) noiseGain.gain.value = intense ? 0.08 : 0.04;
+  }
+
+  // One-shot sounds
+  function play(type) {
+    const c = ensure();
+    const osc = c.createOscillator();
+    const gain = c.createGain();
+    osc.connect(gain);
+    gain.connect(c.destination);
+    gain.gain.value = 0.18;
+    const t = c.currentTime;
+
+    switch(type) {
+      case 'splash':
+        osc.type = 'triangle'; osc.frequency.value = 700;
+        osc.frequency.exponentialRampToValueAtTime(200, t+0.35);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.35);
+        osc.start(t); osc.stop(t+0.35);
+        break;
+      case 'pop':
+        osc.type = 'sine'; osc.frequency.value = 900;
+        osc.frequency.exponentialRampToValueAtTime(400, t+0.15);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.15);
+        osc.start(t); osc.stop(t+0.15);
+        break;
+      case 'bubble':
+        osc.type = 'sine'; osc.frequency.value = 300;
+        osc.frequency.exponentialRampToValueAtTime(1000, t+0.25);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.5);
+        osc.start(t); osc.stop(t+0.5);
+        break;
+      case 'click':
+        osc.type = 'square'; osc.frequency.value = 1200;
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.08);
+        osc.start(t); osc.stop(t+0.08);
+        break;
+      case 'swoosh':
+        osc.type = 'sawtooth'; osc.frequency.value = 200;
+        osc.frequency.exponentialRampToValueAtTime(900, t+0.25);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.35);
+        osc.start(t); osc.stop(t+0.35);
+        break;
+      case 'alarm':
+        gain.gain.value = 0.22;
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(600, t);
+        osc.frequency.setValueAtTime(800, t+0.15);
+        osc.frequency.setValueAtTime(600, t+0.3);
+        osc.frequency.setValueAtTime(800, t+0.45);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.7);
+        osc.start(t); osc.stop(t+0.7);
+        break;
+      case 'victory':
+        gain.gain.value = 0.22;
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(523, t);
+        osc.frequency.setValueAtTime(659, t+0.18);
+        osc.frequency.setValueAtTime(784, t+0.36);
+        osc.frequency.setValueAtTime(1047, t+0.54);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+1);
+        osc.start(t); osc.stop(t+1);
+        break;
+      case 'drip':
+        osc.type = 'sine'; osc.frequency.value = 1200;
+        gain.gain.value = 0.08;
+        osc.frequency.exponentialRampToValueAtTime(400, t+0.12);
+        gain.gain.exponentialRampToValueAtTime(0.001, t+0.12);
+        osc.start(t); osc.stop(t+0.15);
+        break;
+      default:
+        osc.start(t); osc.stop(t+0.1);
+    }
+  }
+
+  return { startWater, stopWater, setWaterIntensity, play };
+})();
+
+// ============================================================
+// WATER DROPS — canvas animation
+// ============================================================
+const WaterFX = (() => {
+  const canvas = document.getElementById('water-canvas');
+  const cctx = canvas.getContext('2d');
+  let drops = [];
+  let active = false;
+  let intense = false;
+  let raf = null;
+
+  function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function spawnDrop() {
+    const cx = canvas.width * (0.35 + Math.random() * 0.3);
+    drops.push({
+      x: cx + (Math.random() - 0.5) * 40,
+      y: canvas.height * 0.18,
+      vy: 2 + Math.random() * 3,
+      size: intense ? 10 + Math.random() * 10 : 5 + Math.random() * 6,
+      alpha: 0.7 + Math.random() * 0.3,
+    });
+  }
+
+  function tick() {
+    cctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (active && Math.random() < (intense ? 0.7 : 0.35)) spawnDrop();
+
+    for (let i = drops.length - 1; i >= 0; i--) {
+      const d = drops[i];
+      d.y += d.vy;
+      d.vy += 0.3;
+      d.alpha -= 0.005;
+      if (d.y > canvas.height || d.alpha <= 0) { drops.splice(i, 1); continue; }
+
+      cctx.save();
+      cctx.globalAlpha = d.alpha;
+      cctx.fillStyle = intense ? '#4FC3F7' : '#90CAF9';
+      cctx.beginPath();
+      // teardrop shape
+      cctx.moveTo(d.x, d.y - d.size);
+      cctx.quadraticCurveTo(d.x + d.size, d.y, d.x, d.y + d.size * 0.6);
+      cctx.quadraticCurveTo(d.x - d.size, d.y, d.x, d.y - d.size);
+      cctx.fill();
+      cctx.restore();
+    }
+    raf = requestAnimationFrame(tick);
+  }
+
+  function start(isIntense) {
+    active = true;
+    intense = !!isIntense;
+    if (!raf) tick();
+  }
+  function stop() {
+    active = false;
+  }
+  function clear() {
+    active = false;
+    drops = [];
+  }
+
+  return { start, stop, clear };
+})();
+
+// ============================================================
+// CONFETTI — canvas
+// ============================================================
+const ConfettiFX = (() => {
+  const canvas = document.getElementById('confetti-canvas');
+  const cctx = canvas.getContext('2d');
+  let pieces = [];
+  let raf = null;
+  const colors = ['#FF6B6B','#4ECDC4','#FFE66D','#A8E6CF','#FF8A80','#82B1FF','#EA80FC','#FFAB40'];
+
+  function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize);
+  resize();
+
+  function launch() {
+    pieces = [];
+    for (let i = 0; i < 80; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height * 0.3,
+        w: 8 + Math.random() * 14,
+        h: 5 + Math.random() * 8,
+        color: colors[i % colors.length],
+        vy: 2 + Math.random() * 4,
+        vx: (Math.random() - 0.5) * 3,
+        rot: Math.random() * 360,
+        rotV: (Math.random() - 0.5) * 10,
+        alpha: 1,
+      });
+    }
+    if (!raf) tick();
+  }
+
+  function tick() {
+    cctx.clearRect(0, 0, canvas.width, canvas.height);
+    let alive = false;
+    for (const p of pieces) {
+      p.y += p.vy;
+      p.x += p.vx;
+      p.vy += 0.08;
+      p.rot += p.rotV;
+      if (p.y > canvas.height * 0.85) p.alpha -= 0.02;
+      if (p.alpha <= 0) continue;
+      alive = true;
+      cctx.save();
+      cctx.globalAlpha = p.alpha;
+      cctx.translate(p.x, p.y);
+      cctx.rotate(p.rot * Math.PI / 180);
+      cctx.fillStyle = p.color;
+      cctx.fillRect(-p.w/2, -p.h/2, p.w, p.h);
+      cctx.restore();
+    }
+    if (alive) raf = requestAnimationFrame(tick);
+    else { raf = null; cctx.clearRect(0, 0, canvas.width, canvas.height); }
+  }
+
+  return { launch };
+})();
+
+// ============================================================
+// GAME STATE
+// ============================================================
+const STEPS = [
+  { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+  { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+  { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+  { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A', isBug: true },
+  { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+  { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+  { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+];
+
+const FIXED_STEPS = [
+  { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+  { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+  { icon: '🚰', label: 'Musluğu KAPAT ✨',  sound: 'click',  color: '#66BB6A', waterOff: true, isFixed: true },
+  { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+  { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A' },
+  { icon: '🚰', label: 'Musluğu AÇ ✨',     sound: 'splash', color: '#4FC3F7', waterOn: true, isFixed: true },
+  { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+  { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+  { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+];
+
+let phase = 'intro';
+let currentStep = -1;
+let waterWaste = 0;
+let waterSaved = 0;
+let waterIsOn = false;
+let wasteTimer = null;
+let dripTimer = null;
+
+const $ = (sel) => document.querySelector(sel);
+const body = document.body;
+const contentEl = $('#content');
+const counterArea = $('#counter-area');
+const mascotFace = $('#mascot-face');
+const mascotBubble = $('#mascot-bubble');
+const mascotDrop = $('#mascot-drop');
+const titleEl = $('#title');
+
+const faces = { happy: '😊', thinking: '🤔', shocked: '😱', celebrate: '🥳', wink: '😉', sad: '😢' };
+
+function setMascot(face, msg, shake) {
+  mascotFace.textContent = faces[face] || face;
+  if (msg) { mascotBubble.textContent = msg; mascotBubble.style.display = ''; }
+  mascotDrop.classList.toggle('mascot-shake', !!shake);
+  if (shake) setTimeout(() => mascotDrop.classList.remove('mascot-shake'), 600);
+}
+
+function setCounter(type, value) {
+  if (!type) { counterArea.innerHTML = ''; return; }
+  counterArea.innerHTML = type === 'waste'
+    ? `<div class="counter-bar counter-waste"><span class="counter-icon">🚱</span> Boşa akan su: <span id="waste-num">${value}</span> damla!</div>`
+    : `<div class="counter-bar counter-saved"><span class="counter-icon">💚</span> Kurtarılan su: <span id="saved-num">${value}</span> damla!</div>`;
+}
+
+function updateWasteNum() {
+  const el = document.getElementById('waste-num');
+  if (el) el.textContent = waterWaste;
+}
+
+function startWaterWaste() {
+  wasteTimer = setInterval(() => {
+    waterWaste++;
+    updateWasteNum();
+  }, 350);
+  dripTimer = setInterval(() => AudioEngine.play('drip'), 600);
+}
+function stopWaterWaste() {
+  clearInterval(wasteTimer);
+  clearInterval(dripTimer);
+}
+
+function turnWaterOn(intense) {
+  if (waterIsOn) return;
+  waterIsOn = true;
+  AudioEngine.startWater();
+  AudioEngine.setWaterIntensity(!!intense);
+  WaterFX.start(!!intense);
+}
+function turnWaterOff() {
+  if (!waterIsOn) return;
+  waterIsOn = false;
+  AudioEngine.stopWater();
+  WaterFX.stop();
+}
+
+// ============================================================
+// RENDER STEPS
+// ============================================================
+function renderSteps(steps, onClick) {
+  const container = document.createElement('div');
+  container.className = 'steps-container';
+
+  steps.forEach((step, idx) => {
+    const btn = document.createElement('button');
+    btn.className = 'step-btn step-idle';
+    btn.dataset.idx = idx;
+    btn.innerHTML = `
+      <span class="step-icon">${step.icon}</span>
+      <span class="step-label">${idx+1}. ${step.label}</span>
+      <span class="step-badge"></span>
+    `;
+    btn.addEventListener('click', () => onClick(idx));
+    // touch
+    btn.addEventListener('touchend', (e) => { e.preventDefault(); onClick(idx); });
+    container.appendChild(btn);
+  });
+
+  contentEl.innerHTML = '';
+  contentEl.appendChild(container);
+  updateStepVisuals(steps);
+}
+
+function updateStepVisuals(steps) {
+  const btns = document.querySelectorAll('.step-btn');
+  btns.forEach((btn, idx) => {
+    const step = steps[idx];
+    const isDone = idx <= currentStep;
+    const isNext = idx === currentStep + 1;
+    const isBugDone = step.isBug && isDone;
+    const isFixedDone = step.isFixed && isDone;
+
+    btn.className = 'step-btn';
+    if (isDone) {
+      btn.classList.add('step-done');
+      if (isBugDone) btn.classList.add('step-bug');
+      else if (isFixedDone) btn.classList.add('step-fixed');
+      btn.style.background = isBugDone ? '' : isFixedDone ? '' : `linear-gradient(135deg, ${step.color}CC, ${step.color})`;
+      btn.style.color = 'white';
+    } else if (isNext) {
+      btn.classList.add('step-next');
+      btn.style.background = '';
+      btn.style.color = '#333';
+    } else {
+      btn.classList.add('step-idle');
+      btn.style.background = '';
+      btn.style.color = '';
+    }
+
+    const badge = btn.querySelector('.step-badge');
+    if (isBugDone) badge.innerHTML = '<span style="animation:wobble 0.5s ease-in-out infinite;display:inline-block">🐛</span>';
+    else if (isFixedDone) badge.textContent = '✅';
+    else if (isNext) badge.innerHTML = '<span style="animation:bounceUp 1s ease-in-out infinite;display:inline-block">👆</span>';
+    else badge.textContent = '';
+  });
+}
+
+// ============================================================
+// PHASES
+// ============================================================
+function showIntro() {
+  phase = 'intro';
+  currentStep = -1;
+  waterWaste = 0;
+  waterSaved = 0;
+  turnWaterOff();
+  stopWaterWaste();
+  WaterFX.clear();
+  body.className = 'bg-normal';
+  titleEl.style.color = '';
+  setMascot('happy', 'Merhaba! Ben Damla! 💧');
+  setCounter(null);
+
+  contentEl.innerHTML = `
+    <div class="intro-card">
+      <p>Bilgisayarlara ne yapacağını söyleyen kişilere <span class="highlight-blue">yazılımcı</span> diyoruz! 👩‍💻</p>
+      <p>Onlar <span class="highlight-purple">kod</span> yazarak bilgisayarlara kurallar öğretir.</p>
+      <p>Ama bazen kodda <span class="highlight-red">hatalar (bug 🐛)</span> olur!</p>
+      <p style="font-size:clamp(22px,3.5vw,40px); font-weight:900; color:#1565C0; margin-top:2vh;">
+        Bugün siz Bug Avcısı olacaksınız! 🔍
+      </p>
+      <button class="big-btn btn-yellow" onclick="startRun()">🚀 KODU ÇALIŞTIR!</button>
+    </div>
+  `;
+}
+
+function startRun() {
+  phase = 'run';
+  currentStep = -1;
+  waterWaste = 0;
+  body.className = 'bg-normal';
+  setMascot('thinking', 'Kodu çalıştıralım! Sırayla basın! 👆');
+  setCounter(null);
+
+  renderSteps(STEPS, (idx) => {
+    if (phase !== 'run' || idx !== currentStep + 1) return;
+    const step = STEPS[idx];
+    AudioEngine.play(step.sound);
+    currentStep = idx;
+
+    if (step.waterOn) turnWaterOn(false);
+    if (step.waterOff) turnWaterOff();
+
+    updateStepVisuals(STEPS);
+
+    if (step.isBug) {
+      // Water is still on! Start waste
+      AudioEngine.setWaterIntensity(true);
+      WaterFX.start(true);
+      setCounter('waste', waterWaste);
+      startWaterWaste();
+      setMascot('thinking', 'Köpürt köpürt... Ama bir dakika... 🤔');
+
+      setTimeout(() => {
+        AudioEngine.play('alarm');
+        stopWaterWaste();
+        setMascot('shocked', 'EYVAH! BUG BULDUK! 🐛 Su hâlâ akıyor!', true);
+        updateStepVisuals(STEPS);
+
+        setTimeout(() => {
+          turnWaterOff();
+          WaterFX.clear();
+          showBugFound();
+        }, 2500);
+      }, 2000);
+      return;
+    }
+  });
+}
+
+function showBugFound() {
+  phase = 'bug_found';
+  body.className = 'bg-bug';
+  titleEl.style.color = 'var(--red)';
+  setMascot('sad', 'Dünyamızın suyu boşa aktı! 😢');
+
+  contentEl.innerHTML = `
+    <div class="panel panel-bug">
+      <div class="emoji-big">🐛🚨</div>
+      <h2 style="color:var(--red)">BUG BULUNDU!</h2>
+      <p>Sabunlarken musluk açık kaldı!</p>
+      <p><strong style="color:var(--red); font-size:clamp(20px,3.5vw,38px)">${waterWaste} damla</strong> su boşa aktı! 😢</p>
+      <p style="margin-top:1.5vh">Dünyamızın suyu çok kıymetli!<br>Hadi bu hatayı düzeltelim! 💪</p>
+      <button class="big-btn btn-green" onclick="startFix()">🔧 BUG'I DÜZELT!</button>
+    </div>
+  `;
+}
+
+function startFix() {
+  phase = 'fix';
+  body.className = 'bg-normal';
+  titleEl.style.color = '';
+  setMascot('thinking', 'Sabunlarken su akmasın! Ne eklemeliyiz? 🤔');
+  setCounter(null);
+
+  // Show the buggy code with an empty slot for the fix
+  contentEl.innerHTML = `
+    <div class="steps-container" id="fix-steps" style="max-width:900px;">
+
+      <div class="step-btn step-done" style="background:linear-gradient(135deg,#4FC3F7CC,#4FC3F7); color:white;">
+        <span class="step-icon">🚰</span>
+        <span class="step-label">1. Musluğu AÇ</span>
+      </div>
+
+      <div class="step-btn step-done" style="background:linear-gradient(135deg,#29B6F6CC,#29B6F6); color:white;">
+        <span class="step-icon">🖐️</span>
+        <span class="step-label">2. Elleri ISLAT</span>
+      </div>
+
+      <!-- EMPTY SLOT — the fix goes here -->
+      <div id="fix-slot" style="
+        border: 5px dashed #FF9800;
+        border-radius: 24px;
+        padding: 2vh 2.5vw;
+        display: flex;
+        align-items: center;
+        gap: 1.5vw;
+        background: repeating-linear-gradient(45deg, rgba(255,152,0,0.06), rgba(255,152,0,0.06) 12px, rgba(255,152,0,0.12) 12px, rgba(255,152,0,0.12) 24px);
+        animation: pulse 1.5s ease-in-out infinite;
+        min-height: 9vh;
+        transition: all 0.5s ease;
+      ">
+        <span style="font-size:clamp(36px,6vw,64px); opacity:0.5;">❓</span>
+        <span style="font-size:clamp(18px,3vw,34px); font-weight:900; color:#E65100;">
+          Buraya ne eklemeliyiz?
+        </span>
+      </div>
+
+      <div class="step-btn step-done" style="background:linear-gradient(135deg,#AB47BCCC,#AB47BC); color:white;">
+        <span class="step-icon">🧼</span>
+        <span class="step-label">3. Sabun AL</span>
+      </div>
+
+      <div class="step-btn step-done" style="background:linear-gradient(135deg,#EC407ACC,#EC407A); color:white;">
+        <span class="step-icon">🫧</span>
+        <span class="step-label">4. Köpürt köpürt!</span>
+      </div>
+
+      <div style="opacity:0.4;" class="step-btn step-idle">
+        <span class="step-icon">💦</span>
+        <span class="step-label">5. Durula</span>
+      </div>
+      <div style="opacity:0.4;" class="step-btn step-idle">
+        <span class="step-icon">🚰</span>
+        <span class="step-label">6. Musluğu KAPAT</span>
+      </div>
+      <div style="opacity:0.4;" class="step-btn step-idle">
+        <span class="step-icon">🧻</span>
+        <span class="step-label">7. Elleri KURULA</span>
+      </div>
+    </div>
+
+    <!-- Big action button -->
+    <button class="big-btn btn-green" id="fix-add-btn" onclick="confirmFix()" style="
+      margin-top: 1.5vh;
+      font-size: clamp(22px, 4.5vw, 48px);
+      padding: 2.5vh 5vw;
+      animation: bigPulse 1.5s ease-in-out infinite;
+      box-shadow: 0 8px 40px rgba(0,230,118,0.5);
+    ">
+      🚰 MUSLUĞU KAPAT EKLE!
+    </button>
+  `;
+}
+
+function confirmFix() {
+  // Disable button immediately
+  const btn = document.getElementById('fix-add-btn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.animation = 'none'; }
+
+  AudioEngine.play('click');
+  setMascot('wink', 'Harika! Musluğu kapatıyoruz! 💚');
+
+  // Animate the slot — fill it with the fix
+  const slot = document.getElementById('fix-slot');
+  if (slot) {
+    slot.style.border = '5px solid #00E676';
+    slot.style.background = 'linear-gradient(135deg, #69F0AE, #00E676)';
+    slot.style.animation = 'popIn 0.5s ease-out';
+    slot.innerHTML = `
+      <span style="font-size:clamp(44px,7vw,80px); line-height:1;">🚰</span>
+      <span style="font-size:clamp(18px,3vw,36px); font-weight:900; color:#1B5E20;">
+        ✅ Musluğu KAPAT
+      </span>
+      <span style="font-size:clamp(32px,5vw,60px); animation:wobble 0.5s ease-in-out 3;">🎉</span>
+    `;
+  }
+
+  // Play a celebration sound
+  setTimeout(() => AudioEngine.play('victory'), 300);
+
+  // After a moment, swap button to "Run the fixed code"
+  setTimeout(() => {
+    setMascot('celebrate', 'Süper! Şimdi yeni kodu deneyelim! 🚀');
+    if (btn) {
+      btn.outerHTML = `
+        <button class="big-btn btn-yellow" onclick="runFixed()" style="
+          margin-top: 1.5vh;
+          font-size: clamp(22px, 4.5vw, 48px);
+          padding: 2.5vh 5vw;
+          animation: bigPulse 1.5s ease-in-out infinite;
+        ">
+          🚀 YENİ KODU ÇALIŞTIR!
+        </button>
+      `;
+    }
+  }, 2000);
+}
+
+function runFixed() {
+  phase = 'run_fixed';
+  currentStep = -1;
+  waterSaved = 0;
+  setMascot('happy', 'Yeni kodu çalıştıralım! 🚀');
+  setCounter(null);
+
+  renderSteps(FIXED_STEPS, (idx) => {
+    if (phase !== 'run_fixed' || idx !== currentStep + 1) return;
+    const step = FIXED_STEPS[idx];
+    AudioEngine.play(step.sound);
+    currentStep = idx;
+
+    if (step.waterOn) turnWaterOn(false);
+    if (step.waterOff) turnWaterOff();
+
+    if (step.isFixed) {
+      waterSaved += 5;
+      setCounter('saved', waterSaved);
+      setMascot('wink', 'Harika! Su tasarrufu! 💚');
+      setTimeout(() => {
+        if (phase === 'run_fixed') setMascot('happy', 'Devam edelim!');
+      }, 1200);
+    }
+
+    updateStepVisuals(FIXED_STEPS);
+
+    if (idx === FIXED_STEPS.length - 1) {
+      turnWaterOff();
+      WaterFX.clear();
+      setTimeout(showVictory, 1000);
+    }
+  });
+}
+
+function showVictory() {
+  phase = 'victory';
+  body.className = 'bg-victory';
+  titleEl.style.color = 'var(--green)';
+  AudioEngine.play('victory');
+  ConfettiFX.launch();
+  setMascot('celebrate', 'YAŞASIN! Bug\'ı düzelttik! 🎉');
+  setCounter('saved', waterSaved);
+
+  contentEl.innerHTML = `
+    <div class="panel panel-victory">
+      <div class="emoji-big">🎉🌍💧</div>
+      <h2 style="color:var(--green)">TEBRİKLER!</h2>
+      <p>Bug'ı buldunuz ve düzelttiniz!</p>
+      <p style="color:var(--green); font-weight:900; font-size:clamp(18px,3vw,32px); margin-top:1vh;">
+        🌱 Artık siz de bir yazılımcı gibi<br>dünyamızın suyunu koruyorsunuz!
+      </p>
+      <div class="certificate">
+        <div class="trophy">🏆</div>
+        <p><strong>Bug Avcısı Sertifikası Kazandınız!</strong></p>
+      </div>
+      <button class="big-btn btn-blue" onclick="showIntro()">🔄 Tekrar Oyna!</button>
+    </div>
+  `;
+
+  // More confetti waves
+  setTimeout(() => ConfettiFX.launch(), 1500);
+  setTimeout(() => ConfettiFX.launch(), 3000);
+}
+
+// ============================================================
+// INIT
+// ============================================================
+// Ensure audio context on first interaction
+document.addEventListener('click', () => AudioEngine.play(''), { once: true });
+document.addEventListener('touchstart', () => AudioEngine.play(''), { once: true });
+
+showIntro();
+</script>
+</body>
+</html>
