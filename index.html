@@ -370,9 +370,25 @@ const AudioEngine = (() => {
   let noiseGain = null;
 
   function ensure() {
-    if (!ctx) ctx = new (window.AudioContext || window.webkitAudioContext)();
-    if (ctx.state === 'suspended') ctx.resume();
+    if (!ctx) {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    // iOS Safari requires resume() inside a user gesture — call it every time
+    if (ctx.state === 'suspended') {
+      ctx.resume();
+    }
     return ctx;
+  }
+
+  // iOS unlock: play a silent buffer to permanently unlock audio output
+  function unlock() {
+    const c = ensure();
+    const buf = c.createBuffer(1, 1, c.sampleRate);
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    src.connect(c.destination);
+    src.start(0);
+    src.stop(c.currentTime + 0.001);
   }
 
   // White noise buffer for water hiss
@@ -507,7 +523,7 @@ const AudioEngine = (() => {
     }
   }
 
-  return { startWater, stopWater, setWaterIntensity, play };
+  return { startWater, stopWater, setWaterIntensity, play, unlock };
 })();
 
 // ============================================================
@@ -1069,9 +1085,11 @@ function showVictory() {
 // ============================================================
 // INIT
 // ============================================================
-// Ensure audio context on first interaction
-document.addEventListener('click', () => AudioEngine.play(''), { once: true });
-document.addEventListener('touchstart', () => AudioEngine.play(''), { once: true });
+// Mobile browsers block audio until a user gesture — unlock on EVERY tap
+function unlockAudio() { AudioEngine.unlock(); }
+document.addEventListener('click', unlockAudio);
+document.addEventListener('touchstart', unlockAudio);
+document.addEventListener('touchend', unlockAudio);
 
 showIntro();
 </script>
