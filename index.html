@@ -279,6 +279,229 @@
     margin: 0 !important;
   }
 
+  /* ---- PROGRESS BAR ---- */
+  .progress-bar-container {
+    width: 90%;
+    max-width: 600px;
+    height: clamp(12px, 2vh, 20px);
+    background: rgba(255,255,255,0.4);
+    border-radius: 20px;
+    overflow: hidden;
+    margin: 0.5vh 0;
+    flex-shrink: 0;
+    border: 2px solid rgba(255,255,255,0.6);
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4FC3F7, #00E676);
+    border-radius: 20px;
+    transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    width: 0%;
+  }
+  .progress-label {
+    font-size: clamp(11px, 1.8vw, 18px);
+    font-weight: 800;
+    color: rgba(0,0,0,0.5);
+    flex-shrink: 0;
+  }
+
+  /* ---- MULTIPLE CHOICE ---- */
+  .choices-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5vh;
+    width: 90%;
+    max-width: 600px;
+    margin-top: 2vh;
+  }
+  .choice-btn {
+    display: flex;
+    align-items: center;
+    gap: 1.5vw;
+    padding: 2vh 3vw;
+    border-radius: 20px;
+    border: 4px solid rgba(0,0,0,0.1);
+    background: rgba(255,255,255,0.9);
+    font-size: clamp(16px, 2.8vw, 30px);
+    font-weight: 800;
+    font-family: 'Nunito', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: left;
+    width: 100%;
+    outline: none;
+  }
+  .choice-btn:hover { transform: scale(1.03); }
+  .choice-btn:active { transform: scale(0.97); }
+  .choice-correct {
+    border-color: #00E676 !important;
+    background: linear-gradient(135deg, #C8E6C9, #A5D6A7) !important;
+    transform: scale(1.05) !important;
+    animation: popIn 0.4s ease-out;
+  }
+  .choice-wrong {
+    border-color: #FF1744 !important;
+    background: linear-gradient(135deg, #FFCDD2, #EF9A9A) !important;
+    opacity: 0.6;
+    transform: scale(0.95) !important;
+  }
+  .choice-icon { font-size: clamp(28px, 5vw, 50px); }
+
+  /* ---- WATER FACT ---- */
+  .water-fact {
+    background: rgba(255,255,255,0.85);
+    border-radius: 20px;
+    padding: 1.5vh 3vw;
+    margin: 1vh 0;
+    max-width: 600px;
+    width: 90%;
+    text-align: center;
+    border: 3px solid #4FC3F7;
+    animation: popIn 0.4s ease-out;
+    flex-shrink: 0;
+  }
+  .water-fact .fact-icon { font-size: clamp(24px, 4vw, 44px); }
+  .water-fact p {
+    font-size: clamp(13px, 2.2vw, 22px);
+    font-weight: 700;
+    color: #1565C0;
+    margin: 0.3vh 0 0;
+    line-height: 1.4;
+  }
+
+  /* ---- LEVEL BADGE ---- */
+  .level-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5vw;
+    background: linear-gradient(135deg, #FFD600, #FFAB00);
+    border-radius: 30px;
+    padding: 0.4vh 2vw;
+    font-size: clamp(12px, 2vw, 22px);
+    font-weight: 900;
+    color: #333;
+    box-shadow: 0 3px 10px rgba(255,214,0,0.4);
+    flex-shrink: 0;
+  }
+
+  /* ---- STARS ---- */
+  .stars-container {
+    font-size: clamp(30px, 6vw, 70px);
+    margin: 1vh 0;
+    display: flex;
+    justify-content: center;
+    gap: 1vw;
+  }
+  .star {
+    display: inline-block;
+    transition: all 0.5s ease;
+    filter: grayscale(100%) opacity(0.3);
+  }
+  .star.earned {
+    filter: none;
+    animation: starPop 0.6s ease-out;
+  }
+  @keyframes starPop {
+    0% { transform: scale(0) rotate(-180deg); }
+    60% { transform: scale(1.3) rotate(10deg); }
+    100% { transform: scale(1) rotate(0deg); }
+  }
+
+  /* ---- STATS ---- */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.2vh 2vw;
+    margin: 1.5vh 0;
+    width: 100%;
+  }
+  .stat-box {
+    background: rgba(255,255,255,0.7);
+    border-radius: 16px;
+    padding: 1vh 1vw;
+    text-align: center;
+  }
+  .stat-box .stat-val {
+    font-size: clamp(20px, 4vw, 40px);
+    font-weight: 900;
+    line-height: 1.2;
+  }
+  .stat-box .stat-label {
+    font-size: clamp(11px, 1.8vw, 18px);
+    font-weight: 700;
+    color: #555;
+  }
+
+  /* ---- RIPPLE ---- */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    transform: scale(0);
+    animation: rippleAnim 0.6s ease-out forwards;
+    pointer-events: none;
+  }
+  @keyframes rippleAnim {
+    to { transform: scale(4); opacity: 0; }
+  }
+
+  /* ---- SCREEN SHAKE ---- */
+  .screen-shake {
+    animation: screenShake 0.5s ease-in-out !important;
+  }
+  @keyframes screenShake {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5px, -3px); }
+    20% { transform: translate(5px, 3px); }
+    30% { transform: translate(-4px, 2px); }
+    40% { transform: translate(4px, -2px); }
+    50% { transform: translate(-3px, 3px); }
+    60% { transform: translate(3px, -1px); }
+    70% { transform: translate(-2px, 1px); }
+    80% { transform: translate(2px, -1px); }
+    90% { transform: translate(-1px, 1px); }
+  }
+
+  /* ---- LEVEL SELECT ---- */
+  .level-select-grid {
+    display: flex;
+    gap: 2vw;
+    margin-top: 2vh;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .level-card {
+    background: rgba(255,255,255,0.9);
+    border-radius: 24px;
+    padding: 2vh 3vw;
+    text-align: center;
+    cursor: pointer;
+    border: 4px solid transparent;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    min-width: 35vw;
+    max-width: 280px;
+  }
+  .level-card:hover { transform: scale(1.05); border-color: var(--yellow); }
+  .level-card .level-num {
+    font-size: clamp(36px, 7vw, 70px);
+    line-height: 1.2;
+  }
+  .level-card .level-title {
+    font-size: clamp(14px, 2.5vw, 24px);
+    font-weight: 900;
+    color: #333;
+  }
+  .level-card .level-stars {
+    font-size: clamp(16px, 3vw, 30px);
+    margin-top: 0.5vh;
+  }
+  .level-locked {
+    opacity: 0.5;
+    cursor: not-allowed;
+    filter: grayscale(50%);
+  }
+  .level-locked:hover { transform: none; border-color: transparent; }
+
   /* ---- WATER DROPS CANVAS ---- */
   #water-canvas {
     position: fixed;
@@ -351,8 +574,17 @@
     <div class="mascot-bubble" id="mascot-bubble">Merhaba! Ben Su Damlası! 💧</div>
   </div>
 
+  <!-- Level Badge -->
+  <div id="level-badge-area"></div>
+
+  <!-- Progress Bar -->
+  <div id="progress-area"></div>
+
   <!-- Counter -->
   <div id="counter-area"></div>
+
+  <!-- Water Fact -->
+  <div id="fact-area" style="display:flex; justify-content:center; width:100%;"></div>
 
   <!-- Main Content -->
   <div id="content" style="flex:1; width:100%; display:flex; flex-direction:column; align-items:center; overflow:hidden;"></div>
@@ -658,35 +890,104 @@ const ConfettiFX = (() => {
 // ============================================================
 // GAME STATE
 // ============================================================
-const STEPS = [
-  { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
-  { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
-  { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
-  { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A', isBug: true },
-  { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
-  { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
-  { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
-];
+const LEVELS = {
+  1: {
+    title: 'Sabunlama Hatası',
+    description: 'Sabunlarken musluk açık kalıyor!',
+    bugSteps: [
+      { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+      { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+      { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A', isBug: true },
+      { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+      { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+      { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+    ],
+    fixedSteps: [
+      { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+      { icon: '🚰', label: 'Musluğu KAPAT ✨',  sound: 'click',  color: '#66BB6A', waterOff: true, isFixed: true },
+      { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+      { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A' },
+      { icon: '🚰', label: 'Musluğu AÇ ✨',     sound: 'splash', color: '#4FC3F7', waterOn: true, isFixed: true },
+      { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+      { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+      { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+    ],
+    choices: [
+      { icon: '🧴', text: 'Daha fazla sabun ekle', correct: false },
+      { icon: '🚰', text: 'Musluğu KAPAT ekle', correct: true },
+      { icon: '⏰', text: 'Zamanlayıcı ekle', correct: false },
+    ],
+    bugMsg: 'Sabunlarken musluk açık kaldı!',
+    fixHint: 'Sabunlarken su akmasın! Ne eklemeliyiz? 🤔',
+  },
+  2: {
+    title: 'Durulama Hatası',
+    description: 'Durulama sonrası musluk açık kalıyor!',
+    bugSteps: [
+      { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+      { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+      { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+      { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A' },
+      { icon: '🚰', label: 'Musluğu AÇ',        sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+      { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726', isBug: true },
+    ],
+    fixedSteps: [
+      { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
+      { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
+      { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
+      { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A' },
+      { icon: '🚰', label: 'Musluğu AÇ',        sound: 'splash', color: '#4FC3F7', waterOn: true },
+      { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
+      { icon: '🚰', label: 'Musluğu KAPAT ✨',  sound: 'click',  color: '#66BB6A', waterOff: true, isFixed: true },
+      { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+    ],
+    choices: [
+      { icon: '💨', text: 'Daha hızlı kurula', correct: false },
+      { icon: '🚰', text: 'Musluğu KAPAT ekle', correct: true },
+      { icon: '🧼', text: 'Tekrar sabunla', correct: false },
+    ],
+    bugMsg: 'Kurulanırken musluk hâlâ açık kaldı!',
+    fixHint: 'Kurulanırken su akmasın! Ne eklemeliyiz? 🤔',
+  },
+};
 
-const FIXED_STEPS = [
-  { icon: '🚰', label: 'Musluğu AÇ',       sound: 'splash', color: '#4FC3F7', waterOn: true },
-  { icon: '🖐️', label: 'Elleri ISLAT',       sound: 'splash', color: '#29B6F6' },
-  { icon: '🚰', label: 'Musluğu KAPAT ✨',  sound: 'click',  color: '#66BB6A', waterOff: true, isFixed: true },
-  { icon: '🧼', label: 'Sabun AL',           sound: 'pop',    color: '#AB47BC' },
-  { icon: '🫧', label: 'Köpürt köpürt!',    sound: 'bubble', color: '#EC407A' },
-  { icon: '🚰', label: 'Musluğu AÇ ✨',     sound: 'splash', color: '#4FC3F7', waterOn: true, isFixed: true },
-  { icon: '💦', label: 'Durula',             sound: 'splash', color: '#26C6DA' },
-  { icon: '🚰', label: 'Musluğu KAPAT',     sound: 'click',  color: '#66BB6A', waterOff: true },
-  { icon: '🧻', label: 'Elleri KURULA',      sound: 'swoosh', color: '#FFA726' },
+const WATER_FACTS = [
+  '💡 Dünyada kullanılabilir tatlı su, toplam suyun sadece %1\'idir!',
+  '💡 Bir musluk dakikada 12 litre su harcayabilir!',
+  '💡 Diş fırçalarken musluğu kapatmak yılda 8.000 litre su tasarrufu sağlar!',
+  '💡 Bir damla su, 1 milyon yıldan fazla yaşında olabilir!',
+  '💡 Dünyada 2 milyardan fazla insan temiz suya erişemiyor.',
+  '💡 5 dakikalık bir duş yaklaşık 75 litre su harcar!',
+  '💡 Bir hamburger üretmek için 2.400 litre su gerekir!',
+  '💡 Suyun %97\'si tuzlu su olup okyanuslar ve denizlerdedir.',
 ];
 
 let phase = 'intro';
+let currentLevel = 1;
 let currentStep = -1;
 let waterWaste = 0;
 let waterSaved = 0;
 let waterIsOn = false;
 let wasteTimer = null;
 let dripTimer = null;
+let score = 0;
+let totalWasteAllLevels = 0;
+let startTime = 0;
+
+// Load saved data from localStorage
+let savedData = JSON.parse(localStorage.getItem('bugHunterData') || '{}');
+if (!savedData.highScore) savedData.highScore = 0;
+if (!savedData.levelStars) savedData.levelStars = {};
+if (!savedData.gamesPlayed) savedData.gamesPlayed = 0;
+
+function saveData() {
+  localStorage.setItem('bugHunterData', JSON.stringify(savedData));
+}
 
 const $ = (sel) => document.querySelector(sel);
 const body = document.body;
@@ -696,8 +997,11 @@ const mascotFace = $('#mascot-face');
 const mascotBubble = $('#mascot-bubble');
 const mascotDrop = $('#mascot-drop');
 const titleEl = $('#title');
+const progressArea = $('#progress-area');
+const factArea = $('#fact-area');
+const levelBadgeArea = $('#level-badge-area');
 
-const faces = { happy: '😊', thinking: '🤔', shocked: '😱', celebrate: '🥳', wink: '😉', sad: '😢' };
+const faces = { happy: '😊', thinking: '🤔', shocked: '😱', celebrate: '🥳', wink: '😉', sad: '😢', cool: '😎' };
 
 function setMascot(face, msg, shake) {
   mascotFace.textContent = faces[face] || face;
@@ -711,6 +1015,46 @@ function setCounter(type, value) {
   counterArea.innerHTML = type === 'waste'
     ? `<div class="counter-bar counter-waste"><span class="counter-icon">🚱</span> Boşa akan su: <span id="waste-num">${value}</span> damla!</div>`
     : `<div class="counter-bar counter-saved"><span class="counter-icon">💚</span> Kurtarılan su: <span id="saved-num">${value}</span> damla!</div>`;
+}
+
+function setProgress(current, total) {
+  if (total <= 0) { progressArea.innerHTML = ''; return; }
+  const pct = Math.round((current / total) * 100);
+  progressArea.innerHTML = `
+    <div class="progress-bar-container">
+      <div class="progress-bar-fill" style="width:${pct}%"></div>
+    </div>
+    <div class="progress-label">Adım ${current} / ${total}</div>
+  `;
+}
+
+function setLevelBadge(level) {
+  if (!level) { levelBadgeArea.innerHTML = ''; return; }
+  levelBadgeArea.innerHTML = `<div class="level-badge">⭐ Seviye ${level}: ${LEVELS[level].title}</div>`;
+}
+
+function showFact() {
+  const fact = WATER_FACTS[Math.floor(Math.random() * WATER_FACTS.length)];
+  factArea.innerHTML = `<div class="water-fact"><span class="fact-icon">🌍</span><p>${fact}</p></div>`;
+}
+function hideFact() { factArea.innerHTML = ''; }
+
+function addRipple(e, el) {
+  const rect = el.getBoundingClientRect();
+  const ripple = document.createElement('span');
+  ripple.className = 'ripple';
+  const size = Math.max(rect.width, rect.height);
+  ripple.style.width = ripple.style.height = size + 'px';
+  ripple.style.left = (e.clientX - rect.left - size/2) + 'px';
+  ripple.style.top = (e.clientY - rect.top - size/2) + 'px';
+  el.appendChild(ripple);
+  setTimeout(() => ripple.remove(), 600);
+}
+
+function shakeScreen() {
+  const app = document.getElementById('app');
+  app.classList.add('screen-shake');
+  setTimeout(() => app.classList.remove('screen-shake'), 500);
 }
 
 function updateWasteNum() {
@@ -744,6 +1088,12 @@ function turnWaterOff() {
   WaterFX.stop();
 }
 
+function calcStars(waste) {
+  if (waste <= 3) return 3;
+  if (waste <= 6) return 2;
+  return 1;
+}
+
 // ============================================================
 // RENDER STEPS
 // ============================================================
@@ -760,8 +1110,7 @@ function renderSteps(steps, onClick) {
       <span class="step-label">${idx+1}. ${step.label}</span>
       <span class="step-badge"></span>
     `;
-    btn.addEventListener('click', () => onClick(idx));
-    // touch
+    btn.addEventListener('click', (e) => { addRipple(e, btn); onClick(idx); });
     btn.addEventListener('touchend', (e) => { e.preventDefault(); onClick(idx); });
     container.appendChild(btn);
   });
@@ -803,6 +1152,9 @@ function updateStepVisuals(steps) {
     else if (isNext) badge.innerHTML = '<span style="animation:bounceUp 1s ease-in-out infinite;display:inline-block">👆</span>';
     else badge.textContent = '';
   });
+
+  // Update progress bar
+  setProgress(Math.max(0, currentStep + 1), steps.length);
 }
 
 // ============================================================
@@ -813,6 +1165,7 @@ function showIntro() {
   currentStep = -1;
   waterWaste = 0;
   waterSaved = 0;
+  score = 0;
   turnWaterOff();
   stopWaterWaste();
   WaterFX.clear();
@@ -820,6 +1173,12 @@ function showIntro() {
   titleEl.style.color = '';
   setMascot('happy', 'Merhaba! Ben Su Damlası! 💧');
   setCounter(null);
+  setProgress(0, 0);
+  setLevelBadge(null);
+  hideFact();
+
+  const hs = savedData.highScore > 0 ? `<p style="font-size:clamp(13px,2vw,20px); color:#FF6D00; margin-top:0.5vh;">🏆 En Yüksek Skor: ${savedData.highScore} puan</p>` : '';
+  const played = savedData.gamesPlayed > 0 ? `<p style="font-size:clamp(11px,1.6vw,16px); color:#888; margin-top:0.3vh;">Toplam ${savedData.gamesPlayed} oyun oynandı</p>` : '';
 
   contentEl.innerHTML = `
     <div class="intro-card">
@@ -829,43 +1188,85 @@ function showIntro() {
       <p style="font-size:clamp(22px,3.5vw,40px); font-weight:900; color:#1565C0; margin-top:2vh;">
         Bugün siz Bug Avcısı olacaksınız! 🔍
       </p>
-      <button class="big-btn btn-yellow" onclick="startRun()">🚀 KODU ÇALIŞTIR!</button>
+      ${hs}${played}
+      <button class="big-btn btn-yellow" onclick="showLevelSelect()">🚀 OYNA!</button>
     </div>
   `;
+}
+
+function showLevelSelect() {
+  phase = 'level_select';
+  setMascot('happy', 'Bir seviye seç! 🎮');
+  hideFact();
+  showFact();
+
+  let cards = '';
+  for (const lvl of [1, 2]) {
+    const level = LEVELS[lvl];
+    const stars = savedData.levelStars[lvl] || 0;
+    const locked = lvl > 1 && !savedData.levelStars[lvl - 1];
+    const starsHtml = [1,2,3].map(i => i <= stars ? '⭐' : '☆').join('');
+    cards += `
+      <div class="level-card ${locked ? 'level-locked' : ''}" onclick="${locked ? '' : `selectLevel(${lvl})`}">
+        <div class="level-num">${locked ? '🔒' : (lvl === 1 ? '🚰' : '💦')}</div>
+        <div class="level-title">${level.title}</div>
+        <div style="font-size:clamp(12px,2vw,18px); color:#666; font-weight:700;">${level.description}</div>
+        <div class="level-stars">${starsHtml}</div>
+      </div>
+    `;
+  }
+
+  contentEl.innerHTML = `
+    <div class="intro-card" style="max-width:850px;">
+      <p style="font-size:clamp(22px,3.5vw,38px); font-weight:900; color:#1565C0;">Seviye Seçin! 🎯</p>
+      <div class="level-select-grid">${cards}</div>
+      <button class="big-btn btn-blue" onclick="showIntro()" style="margin-top:2vh; font-size:clamp(16px,2.5vw,28px); padding:1.5vh 3vw;">← Geri</button>
+    </div>
+  `;
+}
+
+function selectLevel(lvl) {
+  currentLevel = lvl;
+  startRun();
 }
 
 function startRun() {
   phase = 'run';
   currentStep = -1;
   waterWaste = 0;
+  startTime = Date.now();
   body.className = 'bg-normal';
+  setLevelBadge(currentLevel);
   setMascot('thinking', 'Kodu çalıştıralım! Sırayla basın! 👆');
   setCounter(null);
+  hideFact();
 
-  renderSteps(STEPS, (idx) => {
+  const steps = LEVELS[currentLevel].bugSteps;
+
+  renderSteps(steps, (idx) => {
     if (phase !== 'run' || idx !== currentStep + 1) return;
-    const step = STEPS[idx];
+    const step = steps[idx];
     AudioEngine.play(step.sound);
     currentStep = idx;
 
     if (step.waterOn) turnWaterOn(false);
     if (step.waterOff) turnWaterOff();
 
-    updateStepVisuals(STEPS);
+    updateStepVisuals(steps);
 
     if (step.isBug) {
-      // Water is still on! Start waste
       AudioEngine.setWaterIntensity(true);
       WaterFX.start(true);
       setCounter('waste', waterWaste);
       startWaterWaste();
-      setMascot('thinking', 'Köpürt köpürt... Ama bir dakika... 🤔');
+      setMascot('thinking', 'Hmm... Bir dakika... 🤔');
 
       setTimeout(() => {
         AudioEngine.play('alarm');
         stopWaterWaste();
+        shakeScreen();
         setMascot('shocked', 'EYVAH! BUG BULDUK! 🐛 Su hâlâ akıyor!', true);
-        updateStepVisuals(STEPS);
+        updateStepVisuals(steps);
 
         setTimeout(() => {
           turnWaterOff();
@@ -883,12 +1284,16 @@ function showBugFound() {
   body.className = 'bg-bug';
   titleEl.style.color = 'var(--red)';
   setMascot('sad', 'Dünyamızın suyu boşa aktı! 😢');
+  setProgress(0, 0);
+  showFact();
+
+  const level = LEVELS[currentLevel];
 
   contentEl.innerHTML = `
     <div class="panel panel-bug">
       <div class="emoji-big">🐛🚨</div>
       <h2 style="color:var(--red)">BUG BULUNDU!</h2>
-      <p>Sabunlarken musluk açık kaldı!</p>
+      <p>${level.bugMsg}</p>
       <p><strong style="color:var(--red); font-size:clamp(20px,3.5vw,38px)">${waterWaste} damla</strong> su boşa aktı! 😢</p>
       <p style="margin-top:1.5vh">Dünyamızın suyu çok kıymetli!<br>Hadi bu hatayı düzeltelim! 💪</p>
       <button class="big-btn btn-green" onclick="startFix()">🔧 BUG'I DÜZELT!</button>
@@ -900,121 +1305,136 @@ function startFix() {
   phase = 'fix';
   body.className = 'bg-normal';
   titleEl.style.color = '';
-  setMascot('thinking', 'Sabunlarken su akmasın! Ne eklemeliyiz? 🤔');
+  const level = LEVELS[currentLevel];
+  setMascot('thinking', level.fixHint);
   setCounter(null);
+  hideFact();
 
-  // Show the buggy code with an empty slot for the fix
-  contentEl.innerHTML = `
-    <div class="steps-container" id="fix-steps" style="max-width:900px;">
+  // Show buggy steps with empty slot
+  const bugSteps = level.bugSteps;
+  let bugIdx = bugSteps.findIndex(s => s.isBug);
 
-      <div class="step-btn step-done" style="background:linear-gradient(135deg,#4FC3F7CC,#4FC3F7); color:white;">
-        <span class="step-icon">🚰</span>
-        <span class="step-label">1. Musluğu AÇ</span>
+  let stepsHtml = '';
+  let num = 1;
+  for (let i = 0; i < bugSteps.length; i++) {
+    const s = bugSteps[i];
+    if (i === bugIdx) {
+      // Insert fix slot BEFORE the bug step
+      stepsHtml += `
+        <div id="fix-slot" style="
+          border: 5px dashed #FF9800; border-radius: 24px; padding: 2vh 2.5vw;
+          display: flex; align-items: center; gap: 1.5vw;
+          background: repeating-linear-gradient(45deg, rgba(255,152,0,0.06), rgba(255,152,0,0.06) 12px, rgba(255,152,0,0.12) 12px, rgba(255,152,0,0.12) 24px);
+          animation: pulse 1.5s ease-in-out infinite; min-height: 9vh; transition: all 0.5s ease;
+        ">
+          <span style="font-size:clamp(36px,6vw,64px); opacity:0.5;">❓</span>
+          <span style="font-size:clamp(18px,3vw,34px); font-weight:900; color:#E65100;">Buraya ne eklemeliyiz?</span>
+        </div>
+      `;
+    }
+    const opacity = i > bugIdx ? 'opacity:0.4;' : '';
+    const done = i <= bugIdx ? `background:linear-gradient(135deg,${s.color}CC,${s.color}); color:white;` : '';
+    stepsHtml += `
+      <div class="step-btn ${i <= bugIdx ? 'step-done' : 'step-idle'}" style="${done}${opacity}">
+        <span class="step-icon">${s.icon}</span>
+        <span class="step-label">${num++}. ${s.label}</span>
       </div>
-
-      <div class="step-btn step-done" style="background:linear-gradient(135deg,#29B6F6CC,#29B6F6); color:white;">
-        <span class="step-icon">🖐️</span>
-        <span class="step-label">2. Elleri ISLAT</span>
-      </div>
-
-      <!-- EMPTY SLOT — the fix goes here -->
-      <div id="fix-slot" style="
-        border: 5px dashed #FF9800;
-        border-radius: 24px;
-        padding: 2vh 2.5vw;
-        display: flex;
-        align-items: center;
-        gap: 1.5vw;
-        background: repeating-linear-gradient(45deg, rgba(255,152,0,0.06), rgba(255,152,0,0.06) 12px, rgba(255,152,0,0.12) 12px, rgba(255,152,0,0.12) 24px);
-        animation: pulse 1.5s ease-in-out infinite;
-        min-height: 9vh;
-        transition: all 0.5s ease;
-      ">
-        <span style="font-size:clamp(36px,6vw,64px); opacity:0.5;">❓</span>
-        <span style="font-size:clamp(18px,3vw,34px); font-weight:900; color:#E65100;">
-          Buraya ne eklemeliyiz?
-        </span>
-      </div>
-
-      <div class="step-btn step-done" style="background:linear-gradient(135deg,#AB47BCCC,#AB47BC); color:white;">
-        <span class="step-icon">🧼</span>
-        <span class="step-label">3. Sabun AL</span>
-      </div>
-
-      <div class="step-btn step-done" style="background:linear-gradient(135deg,#EC407ACC,#EC407A); color:white;">
-        <span class="step-icon">🫧</span>
-        <span class="step-label">4. Köpürt köpürt!</span>
-      </div>
-
-      <div style="opacity:0.4;" class="step-btn step-idle">
-        <span class="step-icon">💦</span>
-        <span class="step-label">5. Durula</span>
-      </div>
-      <div style="opacity:0.4;" class="step-btn step-idle">
-        <span class="step-icon">🚰</span>
-        <span class="step-label">6. Musluğu KAPAT</span>
-      </div>
-      <div style="opacity:0.4;" class="step-btn step-idle">
-        <span class="step-icon">🧻</span>
-        <span class="step-label">7. Elleri KURULA</span>
-      </div>
-    </div>
-
-    <!-- Big action button -->
-    <button class="big-btn btn-green" id="fix-add-btn" onclick="confirmFix()" style="
-      margin-top: 1.5vh;
-      font-size: clamp(22px, 4.5vw, 48px);
-      padding: 2.5vh 5vw;
-      animation: bigPulse 1.5s ease-in-out infinite;
-      box-shadow: 0 8px 40px rgba(0,230,118,0.5);
-    ">
-      🚰 MUSLUĞU KAPAT EKLE!
-    </button>
-  `;
-}
-
-function confirmFix() {
-  // Disable button immediately
-  const btn = document.getElementById('fix-add-btn');
-  if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.animation = 'none'; }
-
-  AudioEngine.play('click');
-  setMascot('wink', 'Harika! Musluğu kapatıyoruz! 💚');
-
-  // Animate the slot — fill it with the fix
-  const slot = document.getElementById('fix-slot');
-  if (slot) {
-    slot.style.border = '5px solid #00E676';
-    slot.style.background = 'linear-gradient(135deg, #69F0AE, #00E676)';
-    slot.style.animation = 'popIn 0.5s ease-out';
-    slot.innerHTML = `
-      <span style="font-size:clamp(44px,7vw,80px); line-height:1;">🚰</span>
-      <span style="font-size:clamp(18px,3vw,36px); font-weight:900; color:#1B5E20;">
-        ✅ Musluğu KAPAT
-      </span>
-      <span style="font-size:clamp(32px,5vw,60px); animation:wobble 0.5s ease-in-out 3;">🎉</span>
     `;
   }
 
-  // Play a celebration sound
-  setTimeout(() => AudioEngine.play('victory'), 300);
+  // Shuffle choices
+  const choices = [...level.choices].sort(() => Math.random() - 0.5);
 
-  // After a moment, swap button to "Run the fixed code"
-  setTimeout(() => {
-    setMascot('celebrate', 'Süper! Şimdi yeni kodu deneyelim! 🚀');
-    if (btn) {
-      btn.outerHTML = `
-        <button class="big-btn btn-yellow" onclick="runFixed()" style="
-          margin-top: 1.5vh;
-          font-size: clamp(22px, 4.5vw, 48px);
-          padding: 2.5vh 5vw;
-          animation: bigPulse 1.5s ease-in-out infinite;
-        ">
-          🚀 YENİ KODU ÇALIŞTIR!
-        </button>
+  let choicesHtml = '<div class="choices-container">';
+  choices.forEach((c, i) => {
+    choicesHtml += `
+      <button class="choice-btn" data-correct="${c.correct}" onclick="handleChoice(this, ${c.correct})">
+        <span class="choice-icon">${c.icon}</span>
+        <span>${c.text}</span>
+      </button>
+    `;
+  });
+  choicesHtml += '</div>';
+
+  contentEl.innerHTML = `
+    <div class="steps-container" id="fix-steps" style="max-width:900px;">
+      ${stepsHtml}
+    </div>
+    <p style="font-size:clamp(18px,3vw,32px); font-weight:900; color:#E65100; margin-top:1.5vh; text-align:center;">
+      👇 Doğru çözümü seçin!
+    </p>
+    ${choicesHtml}
+  `;
+}
+
+function handleChoice(btn, isCorrect) {
+  if (phase !== 'fix') return;
+
+  // Disable all choice buttons
+  document.querySelectorAll('.choice-btn').forEach(b => {
+    b.disabled = true;
+    b.style.pointerEvents = 'none';
+  });
+
+  if (isCorrect) {
+    phase = 'fix_correct';
+    btn.classList.add('choice-correct');
+    AudioEngine.play('victory');
+    score += 50;
+    setMascot('wink', 'Harika! Doğru cevap! 💚');
+
+    // Animate the slot
+    const slot = document.getElementById('fix-slot');
+    if (slot) {
+      slot.style.border = '5px solid #00E676';
+      slot.style.background = 'linear-gradient(135deg, #69F0AE, #00E676)';
+      slot.style.animation = 'popIn 0.5s ease-out';
+      slot.innerHTML = `
+        <span style="font-size:clamp(44px,7vw,80px); line-height:1;">🚰</span>
+        <span style="font-size:clamp(18px,3vw,36px); font-weight:900; color:#1B5E20;">✅ Musluğu KAPAT</span>
+        <span style="font-size:clamp(32px,5vw,60px); animation:wobble 0.5s ease-in-out 3;">🎉</span>
       `;
     }
-  }, 2000);
+
+    // Show wrong answers
+    document.querySelectorAll('.choice-btn').forEach(b => {
+      if (b !== btn) b.classList.add('choice-wrong');
+    });
+
+    setTimeout(() => {
+      setMascot('celebrate', 'Süper! Şimdi yeni kodu deneyelim! 🚀');
+
+      // Replace choices with run button
+      const choicesContainer = document.querySelector('.choices-container');
+      const choicesLabel = choicesContainer?.previousElementSibling;
+      if (choicesLabel) choicesLabel.remove();
+      if (choicesContainer) {
+        choicesContainer.outerHTML = `
+          <button class="big-btn btn-yellow" onclick="runFixed()" style="
+            margin-top:1.5vh; font-size:clamp(22px,4.5vw,48px);
+            padding:2.5vh 5vw; animation:bigPulse 1.5s ease-in-out infinite;
+          ">🚀 YENİ KODU ÇALIŞTIR!</button>
+        `;
+      }
+    }, 2000);
+  } else {
+    btn.classList.add('choice-wrong');
+    AudioEngine.play('alarm');
+    shakeScreen();
+    score = Math.max(0, score - 10);
+    setMascot('shocked', 'Bu değil! Tekrar dene! 🤔', true);
+
+    // Re-enable other buttons after a delay
+    setTimeout(() => {
+      document.querySelectorAll('.choice-btn').forEach(b => {
+        if (!b.classList.contains('choice-wrong')) {
+          b.disabled = false;
+          b.style.pointerEvents = '';
+        }
+      });
+      phase = 'fix';
+    }, 800);
+  }
 }
 
 function runFixed() {
@@ -1023,12 +1443,16 @@ function runFixed() {
   waterSaved = 0;
   setMascot('happy', 'Yeni kodu çalıştıralım! 🚀');
   setCounter(null);
+  hideFact();
 
-  renderSteps(FIXED_STEPS, (idx) => {
+  const steps = LEVELS[currentLevel].fixedSteps;
+
+  renderSteps(steps, (idx) => {
     if (phase !== 'run_fixed' || idx !== currentStep + 1) return;
-    const step = FIXED_STEPS[idx];
+    const step = steps[idx];
     AudioEngine.play(step.sound);
     currentStep = idx;
+    score += 10;
 
     if (step.waterOn) turnWaterOn(false);
     if (step.waterOff) turnWaterOff();
@@ -1042,9 +1466,9 @@ function runFixed() {
       }, 1200);
     }
 
-    updateStepVisuals(FIXED_STEPS);
+    updateStepVisuals(steps);
 
-    if (idx === FIXED_STEPS.length - 1) {
+    if (idx === steps.length - 1) {
       turnWaterOff();
       WaterFX.clear();
       setTimeout(showVictory, 1000);
@@ -1060,20 +1484,61 @@ function showVictory() {
   ConfettiFX.launch();
   setMascot('celebrate', 'YAŞASIN! Bug\'ı düzelttik! 🎉');
   setCounter('saved', waterSaved);
+  setProgress(0, 0);
+  setLevelBadge(null);
+
+  const elapsed = Math.round((Date.now() - startTime) / 1000);
+  const stars = calcStars(waterWaste);
+
+  // Update high score and saved data
+  if (score > savedData.highScore) savedData.highScore = score;
+  if (!savedData.levelStars[currentLevel] || stars > savedData.levelStars[currentLevel]) {
+    savedData.levelStars[currentLevel] = stars;
+  }
+  savedData.gamesPlayed = (savedData.gamesPlayed || 0) + 1;
+  saveData();
+
+  const starsHtml = [1,2,3].map((i, idx) =>
+    `<span class="star ${i <= stars ? 'earned' : ''}" style="animation-delay:${idx * 0.3}s">${i <= stars ? '⭐' : '☆'}</span>`
+  ).join('');
+
+  const hasNextLevel = LEVELS[currentLevel + 1] !== undefined;
+  const nextBtn = hasNextLevel
+    ? `<button class="big-btn btn-yellow" onclick="currentLevel=${currentLevel+1}; startRun();" style="margin-top:1vh;">🚀 Sonraki Seviye!</button>`
+    : '';
 
   contentEl.innerHTML = `
     <div class="panel panel-victory">
       <div class="emoji-big">🎉🌍💧</div>
       <h2 style="color:var(--green)">TEBRİKLER!</h2>
-      <p>Bug'ı buldunuz ve düzelttiniz!</p>
-      <p style="color:var(--green); font-weight:900; font-size:clamp(18px,3vw,32px); margin-top:1vh;">
+      <div class="stars-container">${starsHtml}</div>
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-val" style="color:var(--red);">🚱 ${waterWaste}</div>
+          <div class="stat-label">Boşa Akan Damla</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" style="color:var(--green);">💚 ${waterSaved}</div>
+          <div class="stat-label">Kurtarılan Damla</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" style="color:#1565C0;">🏆 ${score}</div>
+          <div class="stat-label">Puan</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val" style="color:#FF6D00;">⏱️ ${elapsed}s</div>
+          <div class="stat-label">Süre</div>
+        </div>
+      </div>
+      <p style="color:var(--green); font-weight:900; font-size:clamp(16px,2.5vw,28px); margin-top:1vh;">
         🌱 Artık siz de bir yazılımcı gibi<br>dünyamızın suyunu koruyorsunuz!
       </p>
       <div class="certificate">
         <div class="trophy">🏆</div>
-        <p><strong>Bug Avcısı Sertifikası Kazandınız!</strong></p>
+        <p><strong>Bug Avcısı Sertifikası — Seviye ${currentLevel}!</strong></p>
       </div>
-      <button class="big-btn btn-blue" onclick="showIntro()">🔄 Tekrar Oyna!</button>
+      ${nextBtn}
+      <button class="big-btn btn-blue" onclick="showLevelSelect()" style="margin-top:1vh; font-size:clamp(18px,3vw,32px); padding:1.5vh 4vw;">🎮 Seviye Seçimi</button>
     </div>
   `;
 
@@ -1085,7 +1550,6 @@ function showVictory() {
 // ============================================================
 // INIT
 // ============================================================
-// Mobile browsers block audio until a user gesture — unlock on EVERY tap
 function unlockAudio() { AudioEngine.unlock(); }
 document.addEventListener('click', unlockAudio);
 document.addEventListener('touchstart', unlockAudio);
